@@ -8,6 +8,7 @@ if (! window.console) {
     };
 }
 
+//Global requirejs config available in all modules
 requirejs.config({
     "baseUrl": "js",
     "paths": {
