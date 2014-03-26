@@ -1,7 +1,8 @@
 angular-modular-example
 =======================
 Modularized Angular example project, featuring lazy loading on route change.  
-AngularJS lazy loading has been enabled in: https://github.com/timthesinner/angular.js
+ * AngularJS Feature Proposal: https://groups.google.com/forum/?fromgroups#!topic/angular-dev/QRepqrifFTQ
+ * AngularJS lazy loading has been enabled in: https://github.com/timthesinner/angular.js
 
 All examples below assume that you have already installed nodejs.
 
