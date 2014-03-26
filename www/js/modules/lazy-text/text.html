@@ -1,1 +1,5 @@
-<div>Lazy Text</div>
+<div ng-controller="lazy-text">
+    Lazy Text, Featuring a lazy loaded ngSanatize module, which ensures any html entered in the text area is <b>dangerously</b> trusted
+    <div>Html To Inject:<textarea ng-model="snip" cols="60" rows="3" style="vertical-align:middle"></textarea></div>
+    <div ng-bind-html="trustSnip()"></div>
+</div>

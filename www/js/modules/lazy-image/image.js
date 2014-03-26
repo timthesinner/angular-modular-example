@@ -1,10 +1,10 @@
-define(['jquery', 'angular', 'text!modules/lazy-image/image.html', 'angular-sanatize'], function($, angular, template) {
-  var lazyImage = angular.module('LazyImageModule', ['ngSanitize']);
+define(['jquery', 'angular', 'text!modules/lazy-image/image.html'], function($, angular, template) {
+  var lazyImage = angular.module('LazyImageModule', []);
   lazyImage.template = template;
   
-  lazyImage.controller('lazy-image', ['$sanitize', function($sanatize) {
-
-  }]);
+  lazyImage.controller('lazy-image', function() {
+    
+  });
   
   //Bring the lazy module into the angular runtime
   angular.require('LazyImageModule');

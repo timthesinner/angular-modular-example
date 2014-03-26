@@ -13,18 +13,40 @@
 }(window.jQuery | null, window.angular | null, function($, angular) {
   var $routeProvider = null;
   
+  function TemplateWrapper() {
+    var initialized = false
+        template = null;
+    
+    function get() {
+      if (initialized) {
+        return template;
+      }
+      return get;
+    } 
+    this.get = get;
+    
+    function init(_template) {
+      initialized = true;
+      template = _template;
+    }
+    this.init = init;
+    
+    this.initialized = function() {
+      return initialized;
+    }
+  }
+  
   function lazyModule(moduleName) {
-      var template = null;
+      var template = new TemplateWrapper();
       
       return {
           resolve: {
               lazy: ['$q', function($q) {
                   var defer = $q.defer();
-                  if (! template) {
+                  if (! template.initialized()) {
                       var requirePath = 'modules/' + moduleName + '/module';
-                      console.log('Loading: ' + requirePath);
                       require([requirePath], function(module) {
-                          template = module.template;
+                          template.init(module.template);
                           defer.resolve();
                       });
                   } else {
@@ -33,12 +55,7 @@
                   return defer.promise;
               }]
           },
-          template: function(routeParams) {
-              //If the template has been initialized return it, if not, return a wrapper function
-              // We are guaranteed that template will be initialized by the time the wrapper is invoked
-              // By the use of the defer/promise in the resolver.
-              return template || function() { return template; };
-          },
+          template: template.get,
           controller: moduleName
       };
   }
@@ -51,6 +68,14 @@
   
   lazy.config(['$routeProvider', function($routeProvider_) {
       $routeProvider = $routeProvider_;
+  }]).run(['$rootScope', function($rootScope) {
+    $rootScope.$on('$routeChangeSuccess', function($routeChangeSuccess, next, last) {
+      //Bind to routeChangeSuccess so we can invoke the template function (in the case of late binding)
+      if (next && next.locals && angular.isFunction(next.locals.$template)) {
+        next.locals.$template = next.locals.$template();
+        console.log("Resolved late binding for template");
+      }
+    });
   }]);
   
   lazy.provider('$lazyRoute', function() {

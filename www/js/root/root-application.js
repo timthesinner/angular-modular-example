@@ -9,7 +9,7 @@ define(['jquery', 'angular', 'root/lazy-router'] , function ($, angular) {
     app.config(['$lazyRouteProvider', function ($lazyRouteProvider) {
       $lazyRouteProvider.when_lazy('/text', 'lazy-text');
       $lazyRouteProvider.when_lazy('/image', 'lazy-image');
-      $lazyRouteProvider.otherwise({redirectTo: '/text'});
+      $lazyRouteProvider.otherwise({redirectTo: '/image'});
     }]);
 
     //Create the RootController
@@ -22,7 +22,14 @@ define(['jquery', 'angular', 'root/lazy-router'] , function ($, angular) {
     
     app.run(['$location', function($location) {
       console.log($location);
-    }]);
+    }]).run(function() {
+      $('#clicker li').hover(function() {
+        $(this).css("background-color","red");
+      }).mouseout(function() {
+        $(this).css("background-color","transparent");
+      });
+    });
+    
     
     return app;
 });
